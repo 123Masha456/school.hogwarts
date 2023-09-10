@@ -112,4 +112,27 @@ class StudentServiceTest {
         var result = underTest.readAll(15);
         assertEquals(List.of(student, student3), result);
     }
+
+    @Test
+    void getStudentsWhoseAgeBetweenMinAgeAndMaxAge__returnListOfStudents() {
+        Student student1 = new Student(0L, "Ron", 12);
+        Student student2 = new Student(0L, "Hermiona", 10);
+        Student student3 = new Student(0L, "Gregory", 15);
+        when(testRepository.findByAgeBetween(8, 13)).thenReturn(List.of(student1, student2));
+        var result = underTest.getStudentsWhoseAgeBetween(8, 13);
+        assertEquals(List.of(student1, student2), result);
+    }
+
+    @Test
+    void getFacultyOfStudent_studentIsInTable_returnFacultyOfStudent() {
+
+    }
+
+    @Test
+    void getFacultyOfStudent_studentIsNotInTable_thrownException() {
+        when(testRepository.findById(student.getId())).thenReturn(Optional.empty());
+        StudentException ex = assertThrows(StudentException.class,
+                () -> underTest.getFaculty(0L));
+        assertEquals("STUDENT NOT FOUND", ex.getMessage());
+    }
 }

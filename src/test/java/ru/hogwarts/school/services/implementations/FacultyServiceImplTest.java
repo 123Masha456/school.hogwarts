@@ -9,9 +9,12 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.exceptions.FacultyException;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
+import ru.hogwarts.school.repositories.StudentRepository;
 import ru.hogwarts.school.services.service.FacultyService;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,13 +25,14 @@ import static org.mockito.Mockito.when;
 public class FacultyServiceImplTest {
     @Mock
     FacultyRepository testRepository;
+    StudentRepository studentTestRepo;
     @InjectMocks
     FacultyServiceImpl underTest;
     Faculty faculty = new Faculty(0L, "Kogtevran", "blue");
 
     @BeforeEach
     void beforeEach() {
-        underTest = new FacultyServiceImpl(testRepository);
+        underTest = new FacultyServiceImpl(testRepository, studentTestRepo);
     }
 
 
@@ -110,6 +114,28 @@ public class FacultyServiceImplTest {
         when(testRepository.findAllByColor("blue")).thenReturn(List.of(faculty, faculty3));
         var result = underTest.readAll("blue");
         assertIterableEquals(List.of(faculty, faculty3), result);
+    }
+    @Test
+    void findByNameIgnoreCase__returnFaculty(){
+        Faculty faculty1 = new Faculty(0L, "Slizerin", "yellow");
+        Faculty faculty2 = new Faculty(0L, "Griffindor", "rose");
+        Faculty faculty3 = new Faculty(0L, "Puffenduy", "blue");
+        when(testRepository.findByNameIgnoreCase("Puffenduy")).thenReturn(List.of(faculty3));
+        var result = underTest.findByNameIgnoreCase(faculty3.getName());
+        assertEquals(List.of(faculty3), result);
+    }
+    @Test
+    void findByColorIgnoreCase__returnFaculty(){
+        Faculty faculty1 = new Faculty(0L, "Slizerin", "yellow");
+        Faculty faculty2 = new Faculty(0L, "Griffindor", "rose");
+        Faculty faculty3 = new Faculty(0L, "Puffenduy", "blue");
+        when(testRepository.findByNameIgnoreCase(faculty2.getColor())).thenReturn(List.of(faculty2));
+        var result = underTest.findByNameIgnoreCase(faculty2.getColor());
+        assertEquals(List.of(faculty2), result);
+    }
+    @Test
+    void findListOfStudentsInFaculty__returnListOfStudents(){
+
     }
 }
 
