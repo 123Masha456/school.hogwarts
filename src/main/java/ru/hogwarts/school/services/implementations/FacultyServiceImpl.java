@@ -68,16 +68,17 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public List<Faculty> findByNameIgnoreCase(String name) {
-        return facultyRepository.findByNameIgnoreCase(name);
+    public Faculty findByNameIgnoreCaseOrColorIgnoreCase(String name, String color) {
+        Optional<Faculty> faculty = facultyRepository.findByNameAndColor(name, color);
+        if (faculty.isEmpty()) {
+            throw new FacultyException("FACULTY NOT FOUND");
+        }
+        return faculty.get();
     }
 
-    @Override
-    public List<Faculty> findByColorIgnoreCase(String color) {
-        return facultyRepository.findByColorIgnoreCase(color);
-    }
 
-    public List<Student> findById( long id){
+    public List<Student> findById(long id) {
         return studentRepository.findByFaculty_id(id);
     }
 }
+

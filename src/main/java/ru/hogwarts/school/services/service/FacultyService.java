@@ -6,6 +6,7 @@ import ru.hogwarts.school.model.Student;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface FacultyService {
     Faculty create(Faculty faculty);
@@ -18,6 +19,5 @@ public interface FacultyService {
 
     List<Faculty> readAll(String color);
 
-    List<Faculty> findByNameIgnoreCase(String name);
-    List<Faculty> findByColorIgnoreCase(String color);
+    Faculty findByNameIgnoreCaseOrColorIgnoreCase(String name, String color);
 }

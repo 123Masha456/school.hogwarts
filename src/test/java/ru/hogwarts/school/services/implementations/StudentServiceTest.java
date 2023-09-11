@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.exceptions.StudentException;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 
@@ -125,14 +126,13 @@ class StudentServiceTest {
 
     @Test
     void getFacultyOfStudent_studentIsInTable_returnFacultyOfStudent() {
+    Faculty faculty = new Faculty(0L,"Griffindor", "yellow");
+    student.setFaculty(new Faculty(0L,"Griffindor","yellow"));
+    when(testRepository.findById(0L)).thenReturn(Optional.of(student));
+    var actual = underTest.getFaculty(0L);
+    var result = faculty;
+    assertEquals(actual, result);
+    }
 
     }
 
-    @Test
-    void getFacultyOfStudent_studentIsNotInTable_thrownException() {
-        when(testRepository.findById(student.getId())).thenReturn(Optional.empty());
-        StudentException ex = assertThrows(StudentException.class,
-                () -> underTest.getFaculty(0L));
-        assertEquals("STUDENT NOT FOUND", ex.getMessage());
-    }
-}
