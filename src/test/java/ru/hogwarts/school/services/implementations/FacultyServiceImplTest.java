@@ -120,10 +120,17 @@ public class FacultyServiceImplTest {
         assertIterableEquals(List.of(faculty, faculty3), result);
     }
     @Test
-    void findByNameOrColorIgnoreCase__returnFaculty(){
-        when(testRepository.findByNameIgnoreCaseOrColorIgnoreCase("Kogtevran", "blue"))
+    void findByNameOrColorIgnoreCase_onlyName_returnFaculty(){
+        when(testRepository.findByNameIgnoreCaseOrColorIgnoreCase("Kogtevran", null))
+                .thenReturn(Optional.(faculty));
+        var actual = underTest.findByNameIgnoreCaseOrColorIgnoreCase("Kogtevran", null);
+        assertEquals(actual, faculty);
+    }
+    @Test
+    void findByNameOrColorIgnoreCase_onlyColor_returnFaculty(){
+        when(testRepository.findByNameIgnoreCaseOrColorIgnoreCase(null, "blue"))
                 .thenReturn(Optional.of(faculty));
-        var actual = underTest.findByNameIgnoreCaseOrColorIgnoreCase("Kogtevran", "blue");
+        var actual = underTest.findByNameIgnoreCaseOrColorIgnoreCase(null, "blue");
         assertEquals(actual, faculty);
     }
     @Test

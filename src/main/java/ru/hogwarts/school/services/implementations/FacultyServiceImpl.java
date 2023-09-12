@@ -72,6 +72,11 @@ public class FacultyServiceImpl implements FacultyService {
         Optional<Faculty> faculty = facultyRepository.findByNameAndColor(name, color);
         if (faculty.isEmpty()) {
             throw new FacultyException("FACULTY NOT FOUND");
+        } else if (faculty.get().getName() != null && faculty.get().getColor() == null) {
+            faculty.get();
+        }
+        if (faculty.get().getColor() != null && faculty.get().getName() == null) {
+            faculty.get();
         }
         return faculty.get();
     }
