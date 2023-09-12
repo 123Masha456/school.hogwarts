@@ -42,9 +42,19 @@ public class FacultyController {
         return facultyService.readAll(color);
     }
 
-    @GetMapping(path = "/{name, color}")
-    public Faculty findByNameIgnoreCaseOrColorIgnoreCase(@PathVariable String name, @PathVariable String color) {
-        return facultyService.findByNameIgnoreCaseOrColorIgnoreCase(name, color);
+    @GetMapping(path = "/name, color")
+    public List<Faculty> findByColorIgnoreCase
+            (@RequestParam(required = false) String name, @RequestParam String color) {
+        List<Faculty> byColorIgnoreCase =
+                facultyService.findByNameIgnoreCaseOrColorIgnoreCase(null, color);
+        return byColorIgnoreCase;
+    }
+    @GetMapping(path = "/name, color")
+    public List<Faculty> findByNameIgnoreCase
+            (@RequestParam String name, @RequestParam(required = false) String color){
+        List<Faculty> byNameIgnoreCase =
+                facultyService.findByNameIgnoreCaseOrColorIgnoreCase(name, null);
+        return byNameIgnoreCase;
     }
 }
 

@@ -120,26 +120,14 @@ public class FacultyServiceImplTest {
         assertIterableEquals(List.of(faculty, faculty3), result);
     }
     @Test
-    void findByNameOrColorIgnoreCase_onlyName_returnFaculty(){
-        when(testRepository.findByNameIgnoreCaseOrColorIgnoreCase("Kogtevran", null))
-                .thenReturn(Optional.(faculty));
-        var actual = underTest.findByNameIgnoreCaseOrColorIgnoreCase("Kogtevran", null);
-        assertEquals(actual, faculty);
-    }
-    @Test
-    void findByNameOrColorIgnoreCase_onlyColor_returnFaculty(){
-        when(testRepository.findByNameIgnoreCaseOrColorIgnoreCase(null, "blue"))
-                .thenReturn(Optional.of(faculty));
-        var actual = underTest.findByNameIgnoreCaseOrColorIgnoreCase(null, "blue");
-        assertEquals(actual, faculty);
-    }
-    @Test
-    void findByNameOrColorIgnoreCase_facultyNotFound_thrownException(){
-        when(testRepository.findByNameAndColor(faculty.getName(), faculty.getColor()))
-                .thenReturn(Optional.empty());
-        FacultyException ex = assertThrows(FacultyException.class,
-                ()-> underTest.findByNameIgnoreCaseOrColorIgnoreCase(faculty.getName(), faculty.getColor()));
-        assertEquals("FACULTY NOT FOUND", ex.getMessage());
+    void findByNameIgnoreCaseOrColorIgnoreCase__returnFaculty(){
+        Faculty faculty1 = new Faculty(0L, "Slizerin", "yellow");
+        Faculty faculty2 = new Faculty(0L, "Griffindor", "rose");
+        Faculty faculty3 = new Faculty(0L, "Puffenduy", "blue");
+        when(testRepository.findByNameIgnoreCaseOrColorIgnoreCase("Kogtevran", "blue"))
+                .thenReturn(List.of(faculty,faculty3));
+        var actual = underTest.findByNameIgnoreCaseOrColorIgnoreCase("Kogtevran", "blue");
+        assertEquals(actual, List.of(faculty, faculty3));
     }
 
     @Test

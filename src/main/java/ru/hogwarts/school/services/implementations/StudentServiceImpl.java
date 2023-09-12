@@ -75,7 +75,6 @@ public class StudentServiceImpl implements StudentService {
             throw new StudentException("STUDENT NOT FOUND");
         }
         return student.get().getFaculty();
-
     }
 }
 

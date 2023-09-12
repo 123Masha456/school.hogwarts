@@ -8,11 +8,8 @@ import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 import ru.hogwarts.school.services.service.FacultyService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -68,17 +65,8 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Faculty findByNameIgnoreCaseOrColorIgnoreCase(String name, String color) {
-        Optional<Faculty> faculty = facultyRepository.findByNameAndColor(name, color);
-        if (faculty.isEmpty()) {
-            throw new FacultyException("FACULTY NOT FOUND");
-        } else if (faculty.get().getName() != null && faculty.get().getColor() == null) {
-            faculty.get();
-        }
-        if (faculty.get().getColor() != null && faculty.get().getName() == null) {
-            faculty.get();
-        }
-        return faculty.get();
+    public List<Faculty> findByNameIgnoreCaseOrColorIgnoreCase(String name, String color) {
+        return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(name,color);
     }
 
 

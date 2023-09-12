@@ -1,11 +1,8 @@
 package ru.hogwarts.school.services.service;
 
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface FacultyService {
@@ -19,5 +16,5 @@ public interface FacultyService {
 
     List<Faculty> readAll(String color);
 
-    Faculty findByNameIgnoreCaseOrColorIgnoreCase(String name, String color);
+    List<Faculty> findByNameIgnoreCaseOrColorIgnoreCase(String name, String color);
 }
