@@ -41,4 +41,15 @@ public class FacultyController {
     public List<Faculty> readAll(@PathVariable String color) {
         return facultyService.readAll(color);
     }
+
+    @GetMapping(path = "/name-color")
+    public List<Faculty> findByNameIgnoreCase
+            (@RequestParam(required = false) String name, @RequestParam(required = false) String color){
+        List<Faculty> byNameIgnoreCase =
+                facultyService.findByNameIgnoreCaseOrColorIgnoreCase(name, color);
+        return byNameIgnoreCase;
+    }
 }
+
+
+
