@@ -7,7 +7,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.exceptions.StudentException;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.List;
@@ -21,6 +23,7 @@ class StudentServiceTest {
 
     @Mock
     StudentRepository testRepository;
+    FacultyRepository facultyRepositoryTest;
 
     @InjectMocks
     StudentServiceImpl underTest;
@@ -30,7 +33,7 @@ class StudentServiceTest {
 
     @BeforeEach
     void beforeEach() {
-        underTest = new StudentServiceImpl(testRepository);
+        underTest = new StudentServiceImpl(testRepository, facultyRepositoryTest);
     }
 
     @Test
@@ -112,4 +115,25 @@ class StudentServiceTest {
         var result = underTest.readAll(15);
         assertEquals(List.of(student, student3), result);
     }
+
+    @Test
+    void getStudentsWhoseAgeBetweenMinAgeAndMaxAge__returnListOfStudents() {
+        Student student1 = new Student(0L, "Ron", 12);
+        Student student2 = new Student(0L, "Hermiona", 10);
+        Student student3 = new Student(0L, "Gregory", 15);
+        when(testRepository.findByAgeBetween(8, 13)).thenReturn(List.of(student1, student2));
+        var result = underTest.getStudentsWhoseAgeBetween(8, 13);
+        assertEquals(List.of(student1, student2), result);
+    }
+
+    @Test
+    void getFacultyOfStudent_studentIsInTable_returnFacultyOfStudent() {
+        Faculty faculty2 = new Faculty(0L, "Griffindor", "rose");
+        student.setFaculty(faculty2);
+        when(testRepository.findById(student.getId())).thenReturn(Optional.of(student));
+        var result = underTest.read(student.getId()).getFaculty();
+        assertEquals(faculty2, result);
+    }
+
 }
+
