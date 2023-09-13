@@ -126,12 +126,12 @@ class StudentServiceTest {
 
     @Test
     void getFacultyOfStudent_studentIsInTable_returnFacultyOfStudent() {
-        Faculty faculty = new Faculty(0L, "Griffindor", "yellow");
-        student.setFaculty(new Faculty(0L, "Griffindor", "yellow"));
-        when(testRepository.findById(0L)).thenReturn(Optional.of(student));
-        var actual = underTest.getFaculty(0L);
-        var result = faculty;
-        assertEquals(actual, result);
+        Faculty faculty2 = new Faculty(0L, "Griffindor", "rose");
+        student.setFaculty(faculty2);
+        when(testRepository.findById(student.getId())).thenReturn(Optional.of(student));
+        var result = underTest.read(student.getId()).getFaculty();
+        assertEquals(faculty2, result);
     }
+
 }
 

@@ -70,12 +70,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public Faculty getFaculty(long id) {
-        var student = studentRepository.findById(id);
-        if (student.isEmpty()) {
-            throw new StudentException("STUDENT NOT FOUND");
+            Student student = read(id);
+            return student.getFaculty();
         }
-        return student.get().getFaculty();
-    }
 }
 
 
