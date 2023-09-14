@@ -119,29 +119,30 @@ public class FacultyServiceImplTest {
         var result = underTest.readAll("blue");
         assertIterableEquals(List.of(faculty, faculty3), result);
     }
+
     @Test
-    void findByNameIgnoreCaseOrColorIgnoreCase__returnFaculty(){
+    void findByNameIgnoreCaseOrColorIgnoreCase__returnFaculty() {
         Faculty faculty1 = new Faculty(0L, "Slizerin", "yellow");
         Faculty faculty2 = new Faculty(0L, "Griffindor", "rose");
         Faculty faculty3 = new Faculty(0L, "Puffenduy", "blue");
         when(testRepository.findByNameIgnoreCaseOrColorIgnoreCase("Kogtevran", "blue"))
-                .thenReturn(List.of(faculty,faculty3));
+                .thenReturn(List.of(faculty, faculty3));
         var actual = underTest.findByNameIgnoreCaseOrColorIgnoreCase("Kogtevran", "blue");
         assertEquals(actual, List.of(faculty, faculty3));
     }
 
     @Test
-    void findListOfStudentsInFaculty__returnListOfStudents(){
+    void findListOfStudentsInFaculty__returnListOfStudents() {
         Student student1 = new Student(0L, "Ron", 12);
         Student student2 = new Student(0L, "Hermiona", 10);
         Student student3 = new Student(0L, "Gregory", 15);
         student1.setFaculty(faculty);
         student2.setFaculty(faculty);
         student3.setFaculty(faculty);
-        when(studentTestRepo.findByFaculty_id(faculty.getId())).thenReturn(List.of(student1,student2,student3));
+        when(studentTestRepo.findByFaculty_id(faculty.getId())).thenReturn(List.of(student1, student2, student3));
         var actual = underTest.findById(0L);
-        var result = List.of(student1,student2,student3);
-                assertEquals(actual, result);
+        var result = List.of(student1, student2, student3);
+        assertEquals(actual, result);
     }
 }
 

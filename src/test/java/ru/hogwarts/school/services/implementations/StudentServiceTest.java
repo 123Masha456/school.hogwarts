@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.exceptions.StudentException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.List;
@@ -22,6 +23,7 @@ class StudentServiceTest {
 
     @Mock
     StudentRepository testRepository;
+    FacultyRepository facultyRepositoryTest;
 
     @InjectMocks
     StudentServiceImpl underTest;
@@ -31,7 +33,7 @@ class StudentServiceTest {
 
     @BeforeEach
     void beforeEach() {
-        underTest = new StudentServiceImpl(testRepository);
+        underTest = new StudentServiceImpl(testRepository, facultyRepositoryTest);
     }
 
     @Test

@@ -54,7 +54,6 @@ public class StudentController {
     public Faculty getFacultyOfStudent(@PathVariable long id) {
         studentService.read(id);
         return studentService.getFaculty(id);
-
     }
 }
 

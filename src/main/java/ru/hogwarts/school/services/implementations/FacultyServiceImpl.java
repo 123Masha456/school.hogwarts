@@ -69,7 +69,6 @@ public class FacultyServiceImpl implements FacultyService {
         return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(name,color);
     }
 
-
     public List<Student> findById(long id) {
         return studentRepository.findByFaculty_id(id);
     }

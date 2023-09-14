@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.hogwarts.school.exceptions.FacultyException;
 import ru.hogwarts.school.exceptions.StudentException;
-
 @ControllerAdvice
 public class ControllerExceptionHandler {
     @ExceptionHandler({StudentException.class, FacultyException.class})

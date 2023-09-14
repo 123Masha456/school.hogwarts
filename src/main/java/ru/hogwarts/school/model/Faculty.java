@@ -70,7 +70,6 @@ public class Faculty {
         return id == faculty.id && Objects.equals(name, faculty.name) && Objects.equals(color, faculty.color);
     }
 
-
     @Override
     public int hashCode() {
         return Objects.hash(id, name, color);
