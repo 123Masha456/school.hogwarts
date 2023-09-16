@@ -135,5 +135,56 @@ class StudentServiceTest {
         assertEquals(faculty2, result);
     }
 
+    @Test
+    void findTotalNumberOfStudents__returnTotalNumber() {
+        Student student1 = new Student(2L, "Germiona", 16);
+
+        testRepository.save(student);
+        testRepository.save(student1);
+
+        when(testRepository.findTotalNumberOfStudents()).thenReturn(2);
+        var result = underTest.findTotalNumberOfStudents();
+        assertEquals(2, result);
+    }
+
+    @Test
+    void findAvgAgeOfStudents__returnAvgAge() {
+        Student student1 = new Student(2L, "Germiona", 16);
+        Student student2 = new Student(3L, "Ron", 12);
+
+        testRepository.save(student);
+        testRepository.save(student1);
+        testRepository.save(student2);
+
+        when(testRepository.findAvgAgeOfStudents())
+                .thenReturn((student.getAge() + student1.getAge() + student2.getAge()) / 3);
+
+        var result = underTest.findAvgAgeOfStudents();
+        assertEquals(43 / 3, result);
+    }
+
+    @Test
+    void findLastFiveStudents__returnListOfStudents() {
+        Student student1 = new Student(2L, "Germiona", 16);
+        Student student2 = new Student(3L, "Ron", 12);
+        Student student3 = new Student(4L, "Drago", 17);
+        Student student4 = new Student(5L, "Gregory", 8);
+        Student student5 = new Student(6L, "Fiona", 9);
+
+        testRepository.save(student);
+        testRepository.save(student1);
+        testRepository.save(student2);
+        testRepository.save(student3);
+        testRepository.save(student4);
+        testRepository.save(student5);
+
+        when(testRepository.findLastStudents(5))
+                .thenReturn(List.of(student1, student2, student3, student4, student5));
+
+        var result = underTest.findLastFiveStudents();
+
+        assertEquals(List.of(student1, student2, student3, student4, student5), result);
+    }
+
 }
 

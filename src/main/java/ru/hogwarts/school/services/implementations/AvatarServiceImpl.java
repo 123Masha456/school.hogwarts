@@ -1,6 +1,7 @@
 package ru.hogwarts.school.services.implementations;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.exceptions.AvatarException;
@@ -13,6 +14,7 @@ import ru.hogwarts.school.services.service.StudentService;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
@@ -73,5 +75,11 @@ public class AvatarServiceImpl implements AvatarService {
     @Override
     public Avatar readFromDb(long id) {
         return avatarRepository.findById(id).orElseThrow(() -> new AvatarException("AVATAR NOT FOUND"));
+    }
+
+    @Override
+    public List<Avatar> getPage(int pageNumber, int size) {
+        PageRequest request = PageRequest.of(pageNumber, size);
+        return avatarRepository.findAll(request).getContent();
     }
 }

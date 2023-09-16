@@ -4,6 +4,8 @@ import nonapi.io.github.classgraph.utils.FileUtils;
 
 import org.junit.jupiter.api.Test;
 
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.exceptions.AvatarException;
@@ -15,6 +17,7 @@ import ru.hogwarts.school.services.service.StudentService;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,5 +58,17 @@ public class AvatarServiceImplTest {
         AvatarException ex = assertThrows(AvatarException.class,
                 () -> underTest.readFromDb(student.getId()));
         assertEquals("AVATAR NOT FOUND", ex.getMessage());
+    }
+
+    @Test
+    void getPage__returnListOfAvatars() {
+        Avatar avatar = new Avatar();
+        Avatar avatar1 = new Avatar();
+
+        when(avatarRepository.findAll((PageRequest) any()))
+                .thenReturn(new PageImpl<>(List.of(avatar, avatar1)));
+
+        List<Avatar> result = underTest.getPage(0, 1);
+        assertEquals(List.of(avatar, avatar1), result);
     }
 }
