@@ -45,12 +45,12 @@ public class StudentController {
         return studentService.readAll(age);
     }
 
-    @GetMapping(path = "/age/min-max")
-    public List<Student> getStudentsWhoseAgeBetween(@RequestParam int minAge, @RequestParam int maxAge) {
+    @GetMapping(path = "/age/{minAge}/{maxAge}")
+    public List<Student> getStudentsWhoseAgeBetween(@PathVariable int minAge, @PathVariable int maxAge) {
         return studentService.getStudentsWhoseAgeBetween(minAge, maxAge);
     }
 
-    @GetMapping(path = "{id}/faculty")
+    @GetMapping(path = "/{id}/faculty")
     public Faculty getFacultyOfStudent(@PathVariable long id) {
         studentService.read(id);
         return studentService.getFaculty(id);
