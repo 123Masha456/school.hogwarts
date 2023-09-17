@@ -19,12 +19,11 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -186,6 +185,8 @@ public class StudentControllerTest {
                 restTemplate.getForEntity(url + port + "/student/age-avg", Integer.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(studentRepository.findAvgAgeOfStudents(), response.getBody());
+
 
     }
 
@@ -204,6 +205,13 @@ public class StudentControllerTest {
         studentRepository.save(student4);
         studentRepository.save(student5);
 
+        Student resultStudent = studentRepository.save(student);
+        Student resultStudent1 = studentRepository.save(student1);
+        Student resultStudent2 = studentRepository.save(student2);
+        Student resultStudent3 = studentRepository.save(student3);
+        Student resultStudent4 = studentRepository.save(student4);
+        Student resultStudent5 = studentRepository.save(student5);
+
 
         ResponseEntity<List<Student>> exchange =
                 restTemplate.exchange(url + port + "/student/last-five-students",
@@ -213,6 +221,7 @@ public class StudentControllerTest {
                         });
 
         assertEquals(HttpStatus.OK, exchange.getStatusCode());
+        assertEquals(List.of(resultStudent5, resultStudent4, resultStudent3, resultStudent2, resultStudent1), exchange.getBody());
 
     }
 
