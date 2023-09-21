@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
-    Logger logger = LoggerFactory.getLogger(ControllerExceptionHandler.class);
+    private Logger logger = LoggerFactory.getLogger(ControllerExceptionHandler.class);
     @ExceptionHandler({StudentException.class, FacultyException.class, AvatarException.class})
     public ResponseEntity<String> handleStudentException(RuntimeException ex) {
 
