@@ -49,6 +49,11 @@ public class FacultyController {
                 facultyService.findByNameIgnoreCaseOrColorIgnoreCase(name, color);
         return byNameIgnoreCase;
     }
+
+    @GetMapping(path = "/longest-name")
+    public String findTheLongestNameOfFaculty() {
+        return facultyService.findTheLongestNameOfFaculty();
+    }
 }
 
 

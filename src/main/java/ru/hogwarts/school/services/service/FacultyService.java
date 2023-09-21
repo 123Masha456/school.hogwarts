@@ -16,4 +16,6 @@ public interface FacultyService {
     List<Faculty> readAll(String color);
 
     List<Faculty> findByNameIgnoreCaseOrColorIgnoreCase(String name, String color);
+
+    String findTheLongestNameOfFaculty();
 }

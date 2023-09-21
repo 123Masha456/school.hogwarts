@@ -10,6 +10,7 @@ import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 import ru.hogwarts.school.services.service.FacultyService;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -117,6 +118,20 @@ public class FacultyServiceImpl implements FacultyService {
         logger.info("Returned from method FIND BY ID:" + studentsOnFaculty);
 
         return studentsOnFaculty;
+    }
+
+    @Override
+    public String findTheLongestNameOfFaculty() {
+        logger.info("Method FIND THE LONGEST NAME OF FACULTY was called");
+
+        String resultString = facultyRepository.findAll().stream()
+                .map(faculty -> faculty.getName())
+                .max(Comparator.comparing(name -> name.length()))
+                .orElseThrow(() -> new FacultyException("THERE ARE NO FACULTIES IN DB"));
+
+        logger.info("Returned name of the longest faculty:" + resultString);
+
+        return resultString;
     }
 }
 

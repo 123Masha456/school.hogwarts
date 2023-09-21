@@ -20,11 +20,10 @@ import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class StudentControllerTest {
@@ -44,7 +43,6 @@ public class StudentControllerTest {
     void afterEach() {
         studentRepository.deleteAll();
         facultyRepository.deleteAll();
-        ;
     }
 
     Student student = new Student(1L, "Ron", 10);
@@ -191,7 +189,7 @@ public class StudentControllerTest {
     }
 
     @Test
-    void findLastFiveStudents__status200() {
+    void findLastFiveStudents__status200AndListOfStudents() {
         Student student1 = new Student(2L, "Hermiona", 12);
         Student student2 = new Student(3L, "Ron", 12);
         Student student3 = new Student(4L, "Drago", 17);
@@ -222,6 +220,44 @@ public class StudentControllerTest {
 
         assertEquals(HttpStatus.OK, exchange.getStatusCode());
         assertEquals(List.of(resultStudent5, resultStudent4, resultStudent3, resultStudent2, resultStudent1), exchange.getBody());
+
+    }
+
+    @Test
+    void findStudentsWhoseNameStartsWithLetterA__returnStatus200AndListOfStudents() {
+        Student student1 = new Student(1L, "Alice", 12);
+        Student student2 = new Student(2L, "Alex", 12);
+
+        studentRepository.save(student);
+        studentRepository.save(student1);
+        studentRepository.save(student2);
+
+        ResponseEntity<List<String>> exchange =
+                restTemplate.exchange(url + port + "/student/name-starts-with-a",
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<>() {
+                        });
+        assertEquals(HttpStatus.OK, exchange.getStatusCode());
+        assertEquals(List.of(student2.getName().toUpperCase(),
+                student1.getName().toUpperCase()), exchange.getBody());
+    }
+
+    @Test
+    void findAvgAgeByStream__returnStatus200AndAverageAge() {
+        Student student1 = new Student(2L, "Alice", 12);
+        Student student2 = new Student(3L, "Alex", 15);
+
+        studentRepository.save(student);
+        studentRepository.save(student1);
+        studentRepository.save(student2);
+
+        ResponseEntity<Double> response = restTemplate.getForEntity
+                (url + port + "/student/age-avg-stream", Double.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        assertEquals((double) 37 / 3, response.getBody());
 
     }
 
