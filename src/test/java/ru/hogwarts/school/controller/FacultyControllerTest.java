@@ -151,9 +151,10 @@ public class FacultyControllerTest {
 
         mockMvc.perform(get("/faculty/longest-name")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content("Griffindor"))
-                .andExpect(status().isOk());
+                        .accept(MediaType.APPLICATION_JSON))
+
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(faculty1.getName()));
 
 
     }

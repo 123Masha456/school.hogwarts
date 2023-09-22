@@ -1,10 +1,8 @@
 package ru.hogwarts.school.controller;
 
-import org.apache.coyote.Response;
+
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -245,19 +243,33 @@ public class StudentControllerTest {
 
     @Test
     void findAvgAgeByStream__returnStatus200AndAverageAge() {
-        Student student1 = new Student(2L, "Alice", 12);
-        Student student2 = new Student(3L, "Alex", 15);
+        Student student1 = new Student();
+        Student student2 = new Student();
+        Student student3 = new Student();
 
-        studentRepository.save(student);
+        student1.setId(5L);
+        student1.setName("Harry");
+        student1.setAge(12);
+
+        student2.setId(6L);
+        student2.setName("Alice");
+        student2.setAge(13);
+
+        student3.setId(7L);
+        student3.setName("Alex");
+        student3.setAge(14);
+
         studentRepository.save(student1);
         studentRepository.save(student2);
+        studentRepository.save(student3);
 
         ResponseEntity<Double> response = restTemplate.getForEntity
                 (url + port + "/student/age-avg-stream", Double.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        assertEquals((double) 37 / 3, response.getBody());
+        assertEquals((double) (student1.getAge() + student2.getAge() + student3.getAge()) / 3,
+                response.getBody());
 
     }
 
