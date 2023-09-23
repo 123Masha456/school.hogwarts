@@ -236,5 +236,23 @@ class StudentServiceTest {
         assertEquals(0D, result);
     }
 
+    @Test
+    void findAllStudents__returnListOfStudents() {
+        Student student1 = new Student(2L, "Alice", 16);
+        Student student2 = new Student(3L, "Ron", 12);
+        Student student3 = new Student(4L, "Alex", 17);
+
+        testRepository.save(student);
+        testRepository.save(student1);
+        testRepository.save(student2);
+        testRepository.save(student3);
+
+        when(testRepository.findAll()).thenReturn(List.of(student, student1, student2, student3));
+
+        var result = underTest.findAll();
+
+        assertEquals(List.of(student, student1, student2, student3), result);
+    }
+
 }
 

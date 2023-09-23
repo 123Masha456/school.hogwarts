@@ -1,6 +1,5 @@
 package ru.hogwarts.school.services.service;
 
-import org.springframework.data.jpa.repository.Query;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
@@ -32,4 +31,8 @@ public interface StudentService {
     List<String> findStudentsWhoseNamesStartWithLetterA();
 
     Double findAvgAgeByStream();
+
+    List<Student> findAll();
+
+
 }

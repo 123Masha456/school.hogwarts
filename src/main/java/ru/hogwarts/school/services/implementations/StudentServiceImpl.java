@@ -170,7 +170,16 @@ public class StudentServiceImpl implements StudentService {
         return resultDouble;
     }
 
+    @Override
+    public List<Student> findAll() {
+        logger.info("Method FIND ALL was called");
 
+        List<Student> resultList = studentRepository.findAll();
+
+        logger.info("Returned from method FIND ALL:" + resultList);
+
+        return resultList;
+    }
 }
 
 
