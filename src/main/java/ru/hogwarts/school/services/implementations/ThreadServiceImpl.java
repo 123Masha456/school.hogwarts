@@ -47,19 +47,28 @@ public class ThreadServiceImpl implements ThreadService {
     }
 
     @Override
-    public synchronized void thread1() {
+    public  void thread1() {
         List<Student> all = studentService.findAll();
-        System.out.println(all.get(0));
-        System.out.println(all.get(1));
+        logStudent1(all.get(0));
+        logStudent1(all.get(1));
 
         new Thread(() -> {
-            System.out.println(all.get(2));
-            System.out.println(all.get(3));
+            logStudent1(all.get(2));
+            logStudent1(all.get(3));
         }).start();
 
         new Thread(() -> {
-            System.out.println(all.get(4));
-            System.out.println(all.get(5));
+            logStudent1(all.get(4));
+            logStudent1(all.get(5));
         }).start();
+    }
+
+    private synchronized void logStudent1(Student student) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.getStackTrace();
+        }
+        logger.info(student.toString());
     }
 }
