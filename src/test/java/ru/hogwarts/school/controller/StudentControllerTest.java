@@ -217,7 +217,8 @@ public class StudentControllerTest {
                         });
 
         assertEquals(HttpStatus.OK, exchange.getStatusCode());
-        assertEquals(List.of(resultStudent5, resultStudent4, resultStudent3, resultStudent2, resultStudent1), exchange.getBody());
+        assertEquals(List.of(resultStudent5, resultStudent4, resultStudent3, resultStudent2, resultStudent1),
+                exchange.getBody());
 
     }
 
