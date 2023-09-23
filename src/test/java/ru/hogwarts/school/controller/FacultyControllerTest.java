@@ -142,4 +142,21 @@ public class FacultyControllerTest {
                         value(faculty2.getColor()));
     }
 
+    @Test
+    void findTheLongestNameOfFaculty__returnNameOfFaculty() throws Exception {
+        Faculty faculty1 = new Faculty(2L, "Griffindor", "red");
+        Faculty faculty2 = new Faculty(3L, "Slizerin", "yellow");
+
+        when(facultyRepository.findAll()).thenReturn(List.of(faculty, faculty1, faculty2));
+
+        mockMvc.perform(get("/faculty/longest-name")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(faculty1.getName()));
+
+
+    }
+
 }

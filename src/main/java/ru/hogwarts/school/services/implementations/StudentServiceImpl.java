@@ -1,5 +1,6 @@
 package ru.hogwarts.school.services.implementations;
 
+import liquibase.repackaged.org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -10,9 +11,7 @@ import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 import ru.hogwarts.school.services.service.StudentService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -140,6 +139,38 @@ public class StudentServiceImpl implements StudentService {
         logger.info("Returned List of last five students with data:" + lastFiveStudents);
         return lastFiveStudents;
     }
+
+    @Override
+    public List<String> findStudentsWhoseNamesStartWithLetterA() {
+        logger.info("Method FIND STUDENTS WHOSE NAMES START WITH LETTER A was called");
+
+        List<String> resultList = studentRepository.findAll().stream()
+                .map(student -> student.getName())
+                .filter(name -> StringUtils.startsWithIgnoreCase(name, "a"))
+                .map(name -> name.toUpperCase())
+                .sorted()
+                .collect(Collectors.toList());
+
+        logger.info("Returned List of students whose names start with letter A:" + resultList);
+
+        return resultList;
+    }
+
+    @Override
+    public Double findAvgAgeByStream() {
+        logger.info("Method FIND AVERAGE AGE OF STUDENTS USING STREAM was called");
+
+        Double resultDouble = studentRepository.findAll().stream()
+                .mapToInt(student -> student.getAge())
+                .average()
+                .orElse(0);
+
+        logger.info("Returned average age of students using stream:" + resultDouble);
+
+        return resultDouble;
+    }
+
+
 }
 
 

@@ -1,5 +1,6 @@
 package ru.hogwarts.school.services.implementations;
 
+import liquibase.repackaged.org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,8 +13,10 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -184,6 +187,53 @@ class StudentServiceTest {
         var result = underTest.findLastFiveStudents();
 
         assertEquals(List.of(student1, student2, student3, student4, student5), result);
+    }
+
+    @Test
+    void findStudentsWhoseNameStartsWithLetterA__returnListOfStudents() {
+        Student student1 = new Student(2L, "Alice", 16);
+        Student student2 = new Student(3L, "Ron", 12);
+        Student student3 = new Student(4L, "Alex", 17);
+
+        testRepository.save(student);
+        testRepository.save(student1);
+        testRepository.save(student2);
+        testRepository.save(student3);
+
+        when(testRepository.findAll())
+                .thenReturn(List.of(student, student1, student2, student3));
+
+        var result = underTest.findStudentsWhoseNamesStartWithLetterA();
+
+        assertEquals(List.of(student3.getName().toUpperCase(),
+                student1.getName().toUpperCase()), result);
+
+    }
+
+    @Test
+    void findAvgAgeByStream__returnAverageAgeOfStudentsByStream() {
+        Student student1 = new Student(2L, "Alice", 16);
+        Student student2 = new Student(3L, "Ron", 12);
+        Student student3 = new Student(4L, "Alex", 17);
+
+        testRepository.save(student);
+        testRepository.save(student1);
+        testRepository.save(student2);
+        testRepository.save(student3);
+
+        when(testRepository.findAll())
+                .thenReturn(List.of(student, student1, student2, student3));
+
+        var result = underTest.findAvgAgeByStream();
+        assertEquals(15, result);
+    }
+
+    @Test
+    void findAvgAgeByStream_thereAreNoStudents_return0() {
+        when(testRepository.findAll())
+                .thenReturn(Collections.emptyList());
+        var result = underTest.findAvgAgeByStream();
+        assertEquals(0D, result);
     }
 
 }
